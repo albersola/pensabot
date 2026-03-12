@@ -2,7 +2,7 @@ services:
   postgres:
     image: paradedb/paradedb:0.21.13-pg17
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-secondbrain}
+      POSTGRES_DB: ${POSTGRES_DB:-pensabot}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
