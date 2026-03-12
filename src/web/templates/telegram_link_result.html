@@ -1,0 +1,16 @@
+<div class="generated-link-card">
+    <p class="setup-note">Use either the direct Telegram link or the start command.</p>
+    {% if telegram_deep_link %}
+    <a href="{{ telegram_deep_link }}" target="_blank" rel="noreferrer" class="btn-primary">Open Telegram link</a>
+    {% else %}
+    <p class="setup-note">Set <span class="inline-code">TELEGRAM_BOT_USERNAME</span> to enable a direct Telegram link.</p>
+    {% endif %}
+    <div class="code-block">{{ start_command }}</div>
+    <p class="setup-note">
+        {% if telegram_bot_username %}
+        Send that command to <span class="inline-code">@{{ telegram_bot_username }}</span>. The code expires in 30 minutes.
+        {% else %}
+        Send that command to your Telegram bot. The code expires in 30 minutes.
+        {% endif %}
+    </p>
+</div>

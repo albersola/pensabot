@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Start — pensabot{% endblock %}
+
+{% block content %}
+<header class="nav">
+    <a href="/" class="logo">pensabot</a>
+    <nav>
+        <a href="/login">Sign in</a>
+        <a href="/register" class="btn-primary">Sign up</a>
+    </nav>
+</header>
+
+<section class="setup-hero">
+    <div class="hero-badge">Quick setup</div>
+    <h1>Three steps to get pensabot running</h1>
+    <p class="hero-sub">Create the bot, add your OpenAI key, then sign up to link Telegram from the dashboard.</p>
+</section>
+
+<section class="setup-grid">
+    <article class="setup-card">
+        <div class="setup-step">Step 1</div>
+        <h2>Create a Telegram Bot</h2>
+        <p>Create your bot with BotFather, copy the token, and keep it ready for your app configuration.</p>
+        <ol class="setup-list">
+            <li>Open <a href="https://t.me/BotFather" target="_blank" rel="noreferrer">@BotFather</a> in Telegram.</li>
+            <li>Run <span class="inline-code">/newbot</span> and follow the bot name + username prompts.</li>
+            <li>Save the token in your environment.</li>
+        </ol>
+        <div class="code-block">TELEGRAM_BOT_TOKEN=123456:telegram-token</div>
+        {% if telegram_bot_username %}
+        <p class="setup-note">Current bot username configured for links: <span class="inline-code">@{{ telegram_bot_username }}</span></p>
+        {% endif %}
+    </article>
+
+    <article class="setup-card">
+        <div class="setup-step">Step 2</div>
+        <h2>Create an OpenAI API Key</h2>
+        <p>Generate an API key for the model calls that classify, store, and search the messages you send to your bot.</p>
+        <ol class="setup-list">
+            <li>Create a key in your OpenAI account.</li>
+            <li>Add it to the same environment file or deployment secret set.</li>
+            <li>Restart the app so the backend picks up the key.</li>
+        </ol>
+        <div class="code-block">OPENAI_API_KEY=sk-...</div>
+    </article>
+
+    <article class="setup-card setup-card--cta">
+        <div class="setup-step">Step 3</div>
+        <h2>Sign up and link Telegram</h2>
+        <p>Create your account to open the dashboard, generate a Telegram start link, and connect your chat in one click.</p>
+        <div class="setup-actions">
+            <a href="/register" class="btn-primary btn-lg">Sign up</a>
+            <a href="/login" class="btn-ghost btn-lg">Already have an account</a>
+        </div>
+        <p class="setup-note">After sign in, you will be sent directly to <span class="inline-code">/dashboard</span>.</p>
+    </article>
+</section>
+{% endblock %}

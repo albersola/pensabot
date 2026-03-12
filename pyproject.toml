@@ -1,0 +1,44 @@
+[project]
+name = "pensabot"
+version = "0.1.0"
+description = "AI-powered memory assistant that captures thoughts, messages, and notes, then surfaces them when you need them."
+readme = "README.md"
+authors = []
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.135.1",
+    "jinja2>=3.1.6",
+    "python-multipart>=0.0.22",
+    "uvicorn[standard]>=0.41.0",
+    "sqlmodel>=0.0.22",
+    "asyncpg>=0.30.0",
+    "alembic>=1.14.0",
+    "redis>=5.2.0",
+    "pydantic-settings>=2.7.0",
+    "itsdangerous>=2.2.0",
+    "bcrypt>=4.2.0",
+    "httpx>=0.28.0",
+    "structlog>=24.4.0",
+    "celery[redis]>=5.4.0",
+    "langchain>=0.3.0",
+    "langchain-openai>=0.3.0",
+    "langchain-postgres>=0.0.13",
+    "pgvector>=0.3.6",
+    "tiktoken>=0.8.0",
+    "gevent>=24.0.0",
+    "psycopg[binary]>=3.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.0.2",
+    "ruff>=0.15.4",
+]
