@@ -5,11 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://discord.gg/5DFNca7sp2"><img alt="Discord" src="https://img.shields.io/discord/1480995191773986880?style=for-the-badge&logo=discord&logoColor=white&label=DISCORD&color=7289da"></a>
-</p>
-
-<p align="center">
-  <a href="https://pensabot.ai">Website</a> · <a href="https://discord.gg/5DFNca7sp2">Discord Community</a>
+  <a href="https://pensabot.ai">Website</a>
 </p>
 
 PensaBot is an AI chat that integrates with Telegram (Whatsapp or other providers coming soon) and works as your personal memory. 
@@ -43,8 +39,6 @@ PensaBot is in early development. This is just a small part of our vision:
 - **Local models** — run with Ollama or OpenRouter instead of OpenAI, so you can go fully local
 
 ## Quick Start
-
-> Need help or want to chat? Join our [Discord community](https://discord.gg/5DFNca7sp2) — we're happy to help you get started.
 
 You'll need [Docker](https://docs.docker.com/get-docker/), an [OpenAI API key](https://platform.openai.com/api-keys), and a Telegram bot token from [@BotFather](https://t.me/BotFather).
 
@@ -134,7 +128,7 @@ make worker
 
 Open an issue or pull request if you want to improve the project.
 
-Questions or ideas: [GitHub Issues](https://github.com/albersola/pensabot/issues) · [Discord](https://discord.gg/5DFNca7sp2)
+Questions or ideas: [GitHub Issues](https://github.com/albersola/pensabot/issues)
 
 ## License
 
