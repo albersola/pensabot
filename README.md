@@ -1,4 +1,4 @@
-# PensaBot - Your second brain. Just a chat with AI.
+# PensaBot - Your second brain in a chat
 
 <p align="center">
   <img src="docs/pensabot_logo.png" alt="pensabot logo" width="90%">
@@ -8,11 +8,15 @@
   <a href="https://pensabot.ai">Website</a>
 </p>
 
+> Status: unfinished personal prototype.
+>
+> I built this project for myself to experiment with the idea. It is not production-ready, the feature set is incomplete, and things may change or break without notice.
+
 PensaBot is an AI chat that integrates with Telegram (Whatsapp or other providers coming soon) and works as your personal memory. 
 
 Send it anything — text, voice notes, photos, links, and it will remember everything for you. When you need something back, just ask in plain language. 
 
-It's fully self-hostable, so your data stays yours.
+It's self-hostable, so your data stays yours.
 
 ## Why PensaBot
 
@@ -31,12 +35,8 @@ No structure, no organization, no overhead. You just talk to it, and when you ne
 - 🔍 Hybrid retrieval with vector embeddings + BM25 keyword search
 - 🔒 Self-hosted — your data stays on your infrastructure
 
-### Roadmap
 
-PensaBot is in early development. This is just a small part of our vision:
-
-- **WhatsApp support** — use PensaBot from WhatsApp, not just Telegram
-- **Local models** — run with Ollama or OpenRouter instead of OpenAI, so you can go fully local
+> PensaBot is still in very early development. Right now this repo is mainly a prototype for my own use. Some things are rough, missing, or likely to change.
 
 ## Quick Start
 
