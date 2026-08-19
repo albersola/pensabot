@@ -1,22 +1,28 @@
 # Pensabot
 
-<img src="assets/pensabot.png" alt="Pensabot logo" width="240">
+<p align="center">
+  <img src="assets/pensabot.png" alt="Pensabot logo" width="200">
+</p>
 
-Pensabot is a second brain AI Agent that lives in a Telegram chat.
-
-Send anything you want to keep in a chat (a note, an idea, a link), and forget about it. Pensabot will remember it on its memory for you.
-
-I want to keep the bot simple right now. It has two tools:
-- remember_memory: the agent can decide based on the user message to store one or more memories.
-- retrieve_memories: the agent can generate a query to search user memories. Right now the implementation looks for memories using word matching and ranks them.
-
-> Audio transcription and link summaries are temporarily unavailable while I redesign them.
+<p align="center">
+  <strong>Your second brain, right inside Telegram.</strong><br>
+  Send it a note, an idea, or a link. Pensabot remembers it, so you don't have to.
+</p>
 
 ## Why Pensabot
 
 1. I don't like organizing my notes. 
 2. Sometimes you have an idea and you want to put it somewhere, and recover that in the future.
 3. I want to have fun with ai agents and memory systems.
+
+## Summary
+
+Pensabot is intentionally simple and you can self host it. The AI agent has two tools:
+
+- **`remember_memory`** — decides what is worth keeping and stores one or more durable memories.
+- **`retrieve_memories`** — finds relevant memories with ranked full-text search when you need them again.
+
+> **In progress:** Audio transcription and link summaries are temporarily unavailable while I redesign them.
 
 [Read more about it in my blog.](https://www.pirobits.com/es/blog/pensabot-remember-anything-from-telegram)
 
