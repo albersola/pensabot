@@ -1,24 +1,16 @@
-.PHONY: install run worker fmt lint test migrate
+.PHONY: dev test migrations up psql
 
-install:
-	uv sync
-
-run:
-	mkdir -p ./media
-	docker compose up -d
-	uv run uvicorn main:app --reload --app-dir src
-
-worker:
-	cd src && uv run celery -A celery_app worker --loglevel=info --pool=gevent --concurrency=1
-
-fmt:
-	uv run ruff format src
-
-lint:
-	uv run ruff check src
+dev:
+	uv run python main.py --interface cli
 
 test:
-	uv run pytest
+	uv run python -m unittest
 
-migrate:
-	uv run alembic upgrade head
+migrations:
+	uv run python main.py --migrate
+
+up:
+	docker compose up
+
+psql:
+	docker compose exec -it postgres psql -U pensabot

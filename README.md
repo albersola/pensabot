@@ -1,135 +1,88 @@
-# PensaBot - Your second brain in a chat
+# Pensabot
 
-<p align="center">
-  <img src="docs/pensabot_logo.png" alt="pensabot logo" width="90%">
-</p>
+![Pensabot logo](assets/pensabot.png)
 
-<p align="center">
-  <a href="https://pensabot.ai">Website</a>
-</p>
+Pensabot is a second brain AI Agent that lives in a Telegram chat.
 
-> Status: unfinished personal prototype.
->
-> I built this project for myself to experiment with the idea. It is not production-ready, the feature set is incomplete, and things may change or break without notice.
+Send anything you want to keep in a chat (a note, an idea, a link), and forget about it. Pensabot will remember it on its memory for you.
 
-PensaBot is an AI chat that integrates with Telegram (Whatsapp or other providers coming soon) and works as your personal memory. 
+I want to keep the bot simple right now. It has two tools:
+- remember_memory: the agent can decide based on the user message to store one or more memories.
+- retrieve_memories: the agent can generate a query to search user memories. Right now the implementation looks for memories using word matching and ranks them.
 
-Send it anything — text, voice notes, photos, links, and it will remember everything for you. When you need something back, just ask in plain language. 
+> Audio transcription and link summaries are temporarily unavailable while I redesign them.
 
-It's self-hostable, so your data stays yours.
+## Why Pensabot
 
-## Why PensaBot
+1. I don't like organizing my notes. 
+2. Sometimes you have an idea and you want to put it somewhere, and recover that in the future.
+3. I want to have fun with ai agents and memory systems.
 
-I built PensaBot because I was tired of note-taking apps. I tried all of them and I always ended up abandoning them after a few weeks. The problem was never the app itself, it was the friction: deciding where to put things, organizing folders and tags... I never kept up with it.
+[Read more about it in my blog.](https://www.pirobits.com/es/blog/pensabot-remember-anything-from-telegram)
 
-What I actually do every day is chat. So I thought — what if I could just send things to a chat and have it remember for me? That's PensaBot. 
+## Quick start
 
-No structure, no organization, no overhead. You just talk to it, and when you need something back, you ask. It feels like texting a friend who has perfect memory.
+1. Install dependencies and start PostgreSQL:
 
-## Features
+   ```sh
+   uv sync
+   docker compose up -d postgres
+   ```
 
-- 💬 Captures text, voice, images, and URLs from Telegram
-- 🎙️ Transcribes voice messages and describes images automatically
-- 🔗 Scrapes and summarizes links so you don't have to
-- 📦 Batches short back-to-back messages so context is preserved
-- 🔍 Hybrid retrieval with vector embeddings + BM25 keyword search
-- 🔒 Self-hosted — your data stays on your infrastructure
+2. Create `.env`:
 
+   ```dotenv
+   OPENAI_API_KEY=your_openai_api_key
+   DATABASE_URL=postgresql://pensabot:pensabot@localhost:5432/pensabot
+   MEMORY_MAX_MESSAGES=20
+   MEMORY_SEARCH_LIMIT=10
 
-> PensaBot is still in very early development. Right now this repo is mainly a prototype for my own use. Some things are rough, missing, or likely to change.
+   TELEGRAM_API_KEY=your_bot_token
+   ALLOWED_CHATS=123456789,987654321
+   ```
 
-## Quick Start
+3. Apply migrations:
 
-You'll need [Docker](https://docs.docker.com/get-docker/), an [OpenAI API key](https://platform.openai.com/api-keys), and a Telegram bot token from [@BotFather](https://t.me/BotFather).
+   ```sh
+   uv run python main.py --migrate
+   ```
 
-```bash
-git clone https://github.com/albersola/pensabot.git ~/pensabot
-cd ~/pensabot
+4. Run an interface:
+
+   ```sh
+   uv run python main.py --interface telegram
+   uv run python main.py --interface cli
+   ```
+
+The CLI keeps its history under `cli:local`. Telegram keeps separate history for
+each chat ID. Use `/quit` or `/exit` to leave the CLI.
+
+## Database
+
+Pending migrations from [`migrations/`](migrations/) are applied by
+`--migrate` and automatically whenever Pensabot starts.
+
+The database contains three application tables with matching Python models and
+repositories:
+
+- `chats` stores conversation messages with both user and conversation IDs.
+- `memories` stores durable user facts keyed by `(user_id, memory_key)`.
+- `logs` stores append-only application events, including memory writes.
+
+Useful local PostgreSQL commands:
+
+```sh
+docker compose ps
+docker compose logs -f postgres
+docker compose down
 ```
 
-Create a `.env` file and fill in the required values:
+The named Docker volume preserves data across container restarts. Run
+`docker compose down --volumes` only when you intentionally want to delete the
+local database.
 
-| Variable | What it is | Where to get it |
-|----------|-----------|-----------------|
-| `TELEGRAM_BOT_TOKEN` | Token for your Telegram bot | Create a bot with [@BotFather](https://t.me/BotFather) and copy the token |
-| `TELEGRAM_BOT_USERNAME` | Your bot's username (without @) | The username you chose when creating the bot |
-| `OPENAI_API_KEY` | API key for OpenAI | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
-| `POSTGRES_PASSWORD` | Database password | Generate one: `openssl rand -hex 32` |
-| `SECRET_KEY` | App secret for sessions | Generate one: `openssl rand -hex 32` |
-| `BASE_URL` | Public URL of your instance | `http://localhost:8000` for local, or your domain |
-| `MEDIA_DIR` | Where media files are stored | Leave as `/app/media` for Docker |
+## Tests
 
-Start the full stack:
-
-```bash
-docker compose -f docker-compose.server.yml up -d --build
+```sh
+uv run python -m unittest
 ```
-
-Open `http://localhost:8000`, register a user, go to `/dashboard`, and link your Telegram account.
-
-## Architecture
-
-```text
-Telegram / WhatsApp (coming soon)
-        |
-        v
-   message table
-        |
-        +--> preprocess_message
-        |      |- voice -> Whisper transcription
-        |      |- image -> vision description
-        |      `- URL -> scrape + summary
-        |
-        `--> process_message
-               |- batch nearby pending messages
-               |- wait briefly for continuations
-               |- ask for clarification when needed
-               `- route to save_memory or search_memory
-                             |
-                             v
-                  memory table + embedding vector
-                             |
-                             +--> vector similarity
-                             `--> ParadeDB BM25
-                                      |
-                                      v
-                               synthesized reply
-                                      |
-                                      v
-                              sent back to chat
-```
-
-## Local Development
-
-Prerequisites: Python 3.12+, [uv](https://docs.astral.sh/uv/), Docker
-
-The host-run app reads `.env` by default. Run `cp .env.local .env` and fill
-the necessary variables.
-
-
-Install and run:
-
-```bash
-git clone https://github.com/albersola/pensabot.git
-cd pensabot
-uv sync
-docker compose up -d
-make migrate
-make run
-```
-
-Start the worker in a second terminal:
-
-```bash
-make worker
-```
-
-## Contributing
-
-Open an issue or pull request if you want to improve the project.
-
-Questions or ideas: [GitHub Issues](https://github.com/albersola/pensabot/issues)
-
-## License
-
-AGPL-3.0
