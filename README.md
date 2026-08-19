@@ -1,6 +1,6 @@
 # Pensabot
 
-![Pensabot logo](assets/pensabot.png)
+<img src="assets/pensabot.png" alt="Pensabot logo" width="240">
 
 Pensabot is a second brain AI Agent that lives in a Telegram chat.
 
